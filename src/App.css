@@ -167,7 +167,7 @@
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: -4.5px;
     border: 5px solid transparent;
@@ -181,4 +181,21 @@
     right: 0;
     border-right-color: var(--border);
   }
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+}
+.skip-link:focus {
+  left: 0;
+}
+.aviso-aula {
+  text-align: center;
+  padding: 0.5rem;
+  background: #fff3cd;
+}
+nav a.active {
+  font-weight: 700;
+  text-decoration: underline;
 }
