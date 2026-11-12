@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "../Components/Header.jsx";
 import Footer from "../Components/Footer.jsx";
+import styles from "./Layout.module.css";
 
 export default function Layout() {
   return (
@@ -10,7 +11,7 @@ export default function Layout() {
       </a>
       <Header />
       <p className="aviso-aula">Ejercicio de Routing</p>
-      <main id="contenido">
+      <main id="contenido" className={styles.main}>
         <Outlet />
       </main>
       <Footer />

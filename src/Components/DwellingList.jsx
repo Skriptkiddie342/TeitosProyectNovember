@@ -1,4 +1,5 @@
 import DwellingCard from "./DwellingCard.jsx";
+import styles from "./DwellingList.module.css";
 
 function DwellingList({ viviendas, vista }) {
   if (viviendas.length === 0) {
@@ -6,7 +7,7 @@ function DwellingList({ viviendas, vista }) {
   }
 
   return (
-    <div className="viviendas">
+    <div className={vista === "lista" ? styles.lista : styles.rejilla}>
       {viviendas.map((vivienda) => (
         <DwellingCard key={vivienda.id} vivienda={vivienda} variante={vista} />
       ))}
