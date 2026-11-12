@@ -9,6 +9,17 @@
   border-radius: var(--radio);
 }
 
+.card {
+  transition:
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.card:hover {
+  box-shadow: var(--sombra);
+  transform: translateY(-2px);
+}
+
 .cabecera {
   display: flex;
   justify-content: space-between;

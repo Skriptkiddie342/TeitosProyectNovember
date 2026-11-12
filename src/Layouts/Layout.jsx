@@ -10,7 +10,6 @@ export default function Layout() {
         Saltar al contenido
       </a>
       <Header />
-      <p className="aviso-aula">Ejercicio de Routing</p>
       <main id="contenido" className={styles.main}>
         <Outlet />
       </main>

@@ -16,9 +16,9 @@ function CallCard({ convocatoria }) {
       <p>Unidades: {unidades}</p>
       <p className={styles.renta}>Renta desde {rentaDesde} €</p>
       {estado === "abierta" && (
-        <button type="button" className={styles.boton}>
+        <Link to={`/convocatorias/${id}`} className={styles.boton}>
           Presentar solicitud
-        </button>
+        </Link>
       )}
     </article>
   );

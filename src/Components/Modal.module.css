@@ -39,3 +39,7 @@
 .contenido {
   padding: var(--espacio-4);
 }
+
+.modal {
+  box-shadow: var(--sombra);
+}

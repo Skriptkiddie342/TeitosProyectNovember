@@ -1,5 +1,6 @@
 import CallCard from "../Components/CallCard.jsx";
 import useCalls from "../Hooks/useCall.js";
+import styles from "./Pagina.module.css";
 
 export default function Calls() {
   const { convocatorias, estado } = useCalls();
@@ -7,11 +8,15 @@ export default function Calls() {
   return (
     <>
       <title>Convocatorias | Teitos</title>
-      <h1>Convocatorias</h1>
-      {estado === "cargando" && <p>Cargando...</p>}
-      {estado === "error" && <p>No se han podido cargar las convocatorias.</p>}
+      <h1 className={styles.titulo}>Convocatorias</h1>
+      {estado === "cargando" && <p className={styles.estado}>Cargando...</p>}
+      {estado === "error" && (
+        <p className={`${styles.estado} ${styles.error}`}>
+          No se han podido cargar las convocatorias.
+        </p>
+      )}
       {estado === "ok" && (
-        <div className="viviendas">
+        <div className={styles.rejilla}>
           {convocatorias.map((c) => (
             <CallCard key={c.id} convocatoria={c} />
           ))}

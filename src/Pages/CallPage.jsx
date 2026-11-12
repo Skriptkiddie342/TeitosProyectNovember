@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import useCall from "../Hooks/useCall.js";
 import useCallDwellings from "../Hooks/useCallDwellings.js";
 import DwellingList from "../Components/DwellingList.jsx";
+import styles from "./Pagina.module.css";
 
 export default function CallPage() {
   const { id } = useParams();
@@ -12,28 +13,34 @@ export default function CallPage() {
     return (
       <>
         <title>Cargando convocatoria | Teitos</title>
-        <p>Cargando...</p>
+        <p className={styles.estado}>Cargando...</p>
       </>
     );
   }
 
   if (estado === "noexiste") {
     return (
-      <>
+      <div className={styles.aviso}>
         <title>Convocatoria no encontrada | Teitos</title>
-        <h1>Esta convocatoria no existe</h1>
-        <Link to="/convocatorias">Volver a las convocatorias</Link>
-      </>
+        <h1 className={styles.titulo}>Esta convocatoria no existe</h1>
+        <Link to="/convocatorias" className={styles.volver}>
+          Volver a las convocatorias
+        </Link>
+      </div>
     );
   }
 
   if (estado === "error") {
     return (
-      <>
+      <div className={styles.aviso}>
         <title>Error | Teitos</title>
-        <h1>No se ha podido cargar la convocatoria</h1>
-        <Link to="/convocatorias">Volver a las convocatorias</Link>
-      </>
+        <h1 className={`${styles.titulo} ${styles.error}`}>
+          No se ha podido cargar la convocatoria
+        </h1>
+        <Link to="/convocatorias" className={styles.volver}>
+          Volver a las convocatorias
+        </Link>
+      </div>
     );
   }
 
@@ -50,33 +57,63 @@ export default function CallPage() {
   return (
     <>
       <title>{codigo} | Teitos</title>
-      <h1>{codigo}</h1>
-      <p>Provincia: {provincia}</p>
-      <p>Estado: {convocatoria.estado}</p>
-      <p>Apertura: {fechaApertura}</p>
-      <p>Cierre: {fechaCierre}</p>
-      <p>Sorteo: {sorteo ?? "Pendiente"}</p>
-      <p>Unidades: {unidades}</p>
-      <p>Renta desde {rentaDesde} €</p>
+      <h1 className={styles.titulo}>{codigo}</h1>
 
-      <h2>Viviendas libres</h2>
-      {estadoViviendas === "cargando" && <p>Cargando viviendas...</p>}
+      <dl className={styles.ficha}>
+        <div>
+          <dt>Provincia</dt>
+          <dd>{provincia}</dd>
+        </div>
+        <div>
+          <dt>Estado</dt>
+          <dd>{convocatoria.estado}</dd>
+        </div>
+        <div>
+          <dt>Apertura</dt>
+          <dd>{fechaApertura}</dd>
+        </div>
+        <div>
+          <dt>Cierre</dt>
+          <dd>{fechaCierre}</dd>
+        </div>
+        <div>
+          <dt>Sorteo</dt>
+          <dd>{sorteo ?? "Pendiente"}</dd>
+        </div>
+        <div>
+          <dt>Unidades</dt>
+          <dd>{unidades}</dd>
+        </div>
+        <div>
+          <dt>Renta desde</dt>
+          <dd>{rentaDesde} €</dd>
+        </div>
+      </dl>
+
+      <h2 className={styles.subtitulo}>Viviendas libres</h2>
+      {estadoViviendas === "cargando" && (
+        <p className={styles.estado}>Cargando viviendas...</p>
+      )}
       {estadoViviendas === "error" && (
-        <p>No se han podido cargar las viviendas.</p>
+        <p className={`${styles.estado} ${styles.error}`}>
+          No se han podido cargar las viviendas.
+        </p>
       )}
       {estadoViviendas === "ok" && viviendas.length === 0 && (
-        <>
+        <div className={styles.aviso}>
           <p>
             Esta convocatoria no tiene viviendas libres: ya se ha resuelto o
             todas sus viviendas están adjudicadas.
           </p>
-          <p>
-            <Link to="/convocatorias">Ver otras convocatorias</Link>
-          </p>
-          <p>
-            <Link to="/viviendas">Buscar vivienda</Link>
-          </p>
-        </>
+          <div className={styles.acciones}>
+            <Link to="/convocatorias" className={styles.volver}>
+              Ver otras convocatorias
+            </Link>
+            <Link to="/viviendas" className={styles.volver}>
+              Buscar vivienda
+            </Link>
+          </div>
+        </div>
       )}
       {estadoViviendas === "ok" && viviendas.length > 0 && (
         <DwellingList viviendas={viviendas} vista="rejilla" />

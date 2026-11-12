@@ -5,3 +5,8 @@
   color: var(--color-texto);
   background: var(--color-cabecera);
 }
+
+.footer {
+  margin-top: var(--espacio-5);
+  border-top: 2px solid var(--color-primario);
+}

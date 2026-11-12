@@ -1,0 +1,98 @@
+.detalle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  padding: var(--espacio-5);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--espacio-3);
+}
+
+.titulo {
+  font-size: 2rem;
+  color: var(--color-primario);
+}
+
+.lugar {
+  color: var(--color-texto-suave);
+  overflow-wrap: anywhere;
+}
+
+.estado {
+  padding: var(--espacio-1) var(--espacio-3);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--color-borde);
+  border-radius: 999px;
+}
+
+.renta {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-primario);
+}
+
+.ficha {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--espacio-3);
+  margin: 0;
+  padding: var(--espacio-3);
+  background: var(--color-fondo);
+  border-radius: var(--radio);
+}
+
+.ficha dt {
+  font-size: 0.875rem;
+  color: var(--color-texto-suave);
+}
+
+.ficha dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.extras {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.primario {
+  padding: var(--espacio-2) var(--espacio-4);
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-superficie);
+  background: var(--color-primario);
+  border: 1px solid var(--color-primario);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.primario:hover {
+  box-shadow: var(--sombra);
+}
+
+@media (max-width: 768px) {
+  .detalle {
+    padding: var(--espacio-4);
+  }
+
+  .titulo {
+    font-size: 1.5rem;
+  }
+}
