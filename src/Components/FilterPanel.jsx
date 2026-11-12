@@ -1,3 +1,4 @@
+import RentaPesca from "./RentaPesca.jsx";
 import styles from "./FilterPanel.module.css";
 
 function FilterPanel({
@@ -27,20 +28,7 @@ function FilterPanel({
         </div>
       </fieldset>
 
-      <label className={styles.rango}>
-        <span className={styles.rangoTexto}>
-          <span>Renta máxima</span>
-          <span>{rentaMax} €</span>
-        </span>
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step="10"
-          value={rentaMax}
-          onChange={(e) => onRentaMax(Number(e.target.value))}
-        />
-      </label>
+      <RentaPesca valor={rentaMax} onCambio={onRentaMax} min={min} max={max} />
     </aside>
   );
 }

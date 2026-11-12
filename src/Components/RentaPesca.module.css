@@ -1,0 +1,147 @@
+.pesca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  font-size: 0.875rem;
+}
+
+.etiqueta {
+  font-weight: 600;
+}
+
+.escena {
+  position: relative;
+  width: 200px;
+  height: 250px;
+}
+
+.cana {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 70px;
+  fill: none;
+  stroke: var(--color-texto);
+  stroke-linecap: round;
+}
+
+.mango {
+  stroke: var(--color-texto-suave);
+  stroke-width: 9;
+}
+
+.tramoGrueso {
+  stroke-width: 4;
+}
+
+.tramoFino {
+  stroke-width: 2.5;
+}
+
+.pie {
+  stroke-width: 4;
+}
+
+.anilla {
+  stroke-width: 1.5;
+}
+
+.hilo {
+  stroke: var(--color-texto-suave);
+  stroke-width: 1;
+}
+
+.carrete {
+  position: absolute;
+  top: 52px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  background: var(--color-superficie);
+  border: 3px solid var(--color-texto);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 6px var(--color-cabecera);
+  cursor: grab;
+  touch-action: none;
+}
+
+.carrete:active {
+  cursor: grabbing;
+}
+
+.carrete::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 5px);
+  left: calc(50% - 5px);
+  width: 10px;
+  height: 10px;
+  background: var(--color-texto);
+  border-radius: 50%;
+}
+
+.manivela {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--giro));
+}
+
+.manivela::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 2px);
+  left: 50%;
+  width: 22px;
+  height: 4px;
+  background: var(--color-texto);
+}
+
+.manivela::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 7px);
+  left: calc(50% + 15px);
+  width: 14px;
+  height: 14px;
+  background: var(--color-primario);
+  border-radius: 50%;
+}
+
+.sedal {
+  position: absolute;
+  top: 14px;
+  left: 159px;
+  width: 2px;
+  height: calc(18px + var(--largo));
+  background: var(--color-texto-suave);
+}
+
+.cebo {
+  position: absolute;
+  top: calc(32px + var(--largo));
+  left: 160px;
+  z-index: 1;
+  padding: var(--espacio-1) var(--espacio-2);
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-superficie);
+  background: var(--color-primario);
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+
+.agua {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: var(--color-cabecera);
+  border-radius: 40% 40% var(--radio) var(--radio);
+}
+
+.ayuda {
+  max-width: 200px;
+  color: var(--color-texto-suave);
+}
