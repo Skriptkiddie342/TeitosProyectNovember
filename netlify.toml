@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# React Router: cualquier ruta que no sea un fichero sirve index.html, para que
+# /viviendas/773 funcione al recargar o al abrir el enlace.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
