@@ -8,6 +8,7 @@ export default function CallPage() {
   const { id } = useParams();
   const { convocatoria, estado } = useCall(id);
   const { viviendas, estado: estadoViviendas } = useCallDwellings(id);
+  const libres = viviendas.filter((v) => !v.adjudicada);
 
   if (estado === "cargando") {
     return (
@@ -56,7 +57,7 @@ export default function CallPage() {
 
   return (
     <>
-      <title>{codigo} | Teitos</title>
+      <title>{`${codigo} | Teitos`}</title>
       <h1 className={styles.titulo}>{codigo}</h1>
 
       <dl className={styles.ficha}>
@@ -86,7 +87,9 @@ export default function CallPage() {
         </div>
         <div>
           <dt>Renta desde</dt>
-          <dd>{rentaDesde} €</dd>
+          <dd>
+            {rentaDesde === null ? "Sin viviendas libres" : `${rentaDesde} €`}
+          </dd>
         </div>
       </dl>
 
@@ -99,7 +102,7 @@ export default function CallPage() {
           No se han podido cargar las viviendas.
         </p>
       )}
-      {estadoViviendas === "ok" && viviendas.length === 0 && (
+      {estadoViviendas === "ok" && libres.length === 0 && (
         <div className={styles.aviso}>
           <p>
             Esta convocatoria no tiene viviendas libres: ya se ha resuelto o
@@ -115,8 +118,8 @@ export default function CallPage() {
           </div>
         </div>
       )}
-      {estadoViviendas === "ok" && viviendas.length > 0 && (
-        <DwellingList viviendas={viviendas} vista="rejilla" />
+      {estadoViviendas === "ok" && libres.length > 0 && (
+        <DwellingList viviendas={libres} vista="rejilla" />
       )}
     </>
   );

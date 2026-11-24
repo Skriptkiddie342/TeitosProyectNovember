@@ -1,5 +1,5 @@
 import CallCard from "../components/CallCard.jsx";
-import useCalls from "../hooks/useCall.js";
+import useCalls from "../hooks/useCalls.js";
 import styles from "./Pagina.module.css";
 
 export default function Calls() {
@@ -14,6 +14,9 @@ export default function Calls() {
         <p className={`${styles.estado} ${styles.error}`}>
           No se han podido cargar las convocatorias.
         </p>
+      )}
+      {estado === "vacio" && (
+        <p className={styles.estado}>No hay ninguna convocatoria.</p>
       )}
       {estado === "ok" && (
         <div className={styles.rejilla}>

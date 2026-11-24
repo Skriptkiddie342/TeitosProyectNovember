@@ -1,13 +1,7 @@
-function badge({ accesibilidad }) {
-  const ROTULO_ACCESIBILIDAD = {
-    adaptada: "Accesible",
-    sin_adaptar: "No accesible",
-  };
+import { textoMedida } from "../../utils/accesibilidad.js";
 
-  const accesibilidadTexto =
-    accesibilidad == null
-      ? "Accesibilidad: sin datos"
-      : `Accesibilidad: ${ROTULO_ACCESIBILIDAD[accesibilidad]}`;
+function Badge({ accesibilidad }) {
+  return <p>Accesibilidad: {textoMedida(accesibilidad)}</p>;
 }
 
-export default badge;
+export default Badge;

@@ -45,7 +45,7 @@ export default function DwellingPage() {
 
   return (
     <div className={styles.detalle}>
-      <title>{vivienda.referencia} | Teitos</title>
+      <title>{`${vivienda.referencia} | Teitos`}</title>
       <p>
         <Link to="/viviendas" className={styles.volver}>
           ← Volver al buscador

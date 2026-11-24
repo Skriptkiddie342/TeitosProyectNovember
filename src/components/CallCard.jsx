@@ -14,7 +14,11 @@ function CallCard({ convocatoria }) {
       <p className={styles.estado}>Estado: {estado}</p>
       <p>Cierre: {fechaCierre}</p>
       <p>Unidades: {unidades}</p>
-      <p className={styles.renta}>Renta desde {rentaDesde} €</p>
+      <p className={styles.renta}>
+        {rentaDesde === null
+          ? "Sin viviendas libres"
+          : `Renta desde ${rentaDesde} €`}
+      </p>
       {estado === "abierta" && (
         <Link to={`/convocatorias/${id}`} className={styles.boton}>
           Presentar solicitud

@@ -1,6 +1,6 @@
 import Hero from "../components/Hero.jsx";
 import CallCard from "../components/CallCard.jsx";
-import useCalls from "../hooks/useCall.js";
+import useCalls from "../hooks/useCalls.js";
 import styles from "./Principal.module.css";
 
 const pasos = [
@@ -25,6 +25,9 @@ export default function Principal() {
           <p className={styles.error}>
             No se han podido cargar las convocatorias.
           </p>
+        )}
+        {estado === "vacio" && (
+          <p>Ahora mismo no hay convocatorias abiertas.</p>
         )}
         {estado === "ok" && (
           <div className={styles.rejilla}>
