@@ -50,13 +50,6 @@ body {
   top: var(--espacio-2);
 }
 
-.aviso-aula {
-  padding: var(--espacio-1) var(--espacio-3);
-  font-size: 0.875rem;
-  text-align: center;
-  color: var(--color-texto-suave);
-}
-
 h1,
 h2,
 h3 {
