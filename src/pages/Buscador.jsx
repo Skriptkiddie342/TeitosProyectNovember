@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
-import SearchBar from "../Components/SearchBar.jsx";
-import FilterPanel from "../Components/FilterPanel.jsx";
-import DwellingList from "../Components/DwellingList.jsx";
+import SearchBar from "../components/SearchBar.jsx";
+import FilterPanel from "../components/FilterPanel.jsx";
+import DwellingList from "../components/DwellingList.jsx";
 import datos from "../../db.json";
 import styles from "./Buscador.module.css";
 

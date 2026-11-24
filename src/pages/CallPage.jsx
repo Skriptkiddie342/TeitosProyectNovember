@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
-import useCall from "../Hooks/useCall.js";
-import useCallDwellings from "../Hooks/useCallDwellings.js";
-import DwellingList from "../Components/DwellingList.jsx";
+import useCall from "../hooks/useCall.js";
+import useCallDwellings from "../hooks/useCallDwellings.js";
+import DwellingList from "../components/DwellingList.jsx";
 import styles from "./Pagina.module.css";
 
 export default function CallPage() {

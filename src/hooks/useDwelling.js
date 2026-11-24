@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { API } from "../api.js";
+import { API } from "../api/api.js";
 
 export default function useDwelling(id) {
   const [vivienda, setVivienda] = useState(null);

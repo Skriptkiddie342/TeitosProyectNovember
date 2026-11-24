@@ -1,6 +1,6 @@
-import Hero from "../Components/Hero.jsx";
-import CallCard from "../Components/CallCard.jsx";
-import useCalls from "../Hooks/useCall.js";
+import Hero from "../components/Hero.jsx";
+import CallCard from "../components/CallCard.jsx";
+import useCalls from "../hooks/useCall.js";
 import styles from "./Principal.module.css";
 
 const pasos = [

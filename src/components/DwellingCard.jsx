@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import formatLocation from "./formatLocation.jsx";
+import formatLocation from "../utils/formatLocation.jsx";
 import Specs from "./ui/Specs.jsx";
 import Rent from "./ui/Rent.jsx";
 import Badge from "./ui/badge.jsx";
 import Modal from "./Modal.jsx";
 import SolicitudForm from "./SolicitudForm.jsx";
-import { useSolicitudes } from "../Context/SolicitudesContext.jsx";
+import { useSolicitudes } from "../context/SolicitudesContext.jsx";
 import styles from "./DwellingCard.module.css";
 
 function DwellingCard({ vivienda, variante = "rejilla" }) {

@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import useDwelling from "../Hooks/useDwelling.js";
-import DwellingDetail from "../Components/DwellingDetail.jsx";
+import useDwelling from "../hooks/useDwelling.js";
+import DwellingDetail from "../components/DwellingDetail.jsx";
 import styles from "./Pagina.module.css";
 
 export default function DwellingPage() {

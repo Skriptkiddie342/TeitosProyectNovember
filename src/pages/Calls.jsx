@@ -1,5 +1,5 @@
-import CallCard from "../Components/CallCard.jsx";
-import useCalls from "../Hooks/useCall.js";
+import CallCard from "../components/CallCard.jsx";
+import useCalls from "../hooks/useCall.js";
 import styles from "./Pagina.module.css";
 
 export default function Calls() {

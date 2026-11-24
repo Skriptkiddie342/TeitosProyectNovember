@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSolicitudes } from "../Context/SolicitudesContext.jsx";
+import { useSolicitudes } from "../context/SolicitudesContext.jsx";
 import styles from "./MisSolicitudes.module.css";
 
 export default function MisSolicitudes() {

@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import Layout from "./Layouts/Layout.jsx";
-import Principal from "./Pages/Principal.jsx";
-import Buscador from "./Pages/Buscador.jsx";
-import DwellingPage from "./Pages/DwellingPage.jsx";
-import Calls from "./Pages/Calls.jsx";
-import CallPage from "./Pages/CallPage.jsx";
-import NotFound from "./Pages/NotFound.jsx";
-import MisSolicitudes from "./Pages/MisSolicitudes.jsx";
+import Layout from "./components/Layout.jsx";
+import Principal from "./pages/Principal.jsx";
+import Buscador from "./pages/Buscador.jsx";
+import DwellingPage from "./pages/DwellingPage.jsx";
+import Calls from "./pages/Calls.jsx";
+import CallPage from "./pages/CallPage.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import MisSolicitudes from "./pages/MisSolicitudes.jsx";
 
 function App() {
   return (
