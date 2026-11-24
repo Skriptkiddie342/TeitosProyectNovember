@@ -1,18 +1,12 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import formatLocation from "../utils/formatLocation.jsx";
 import Specs from "./ui/Specs.jsx";
 import Rent from "./ui/Rent.jsx";
 import Badge from "./ui/badge.jsx";
-import Modal from "./Modal.jsx";
-import SolicitudForm from "./SolicitudForm.jsx";
-import { useSolicitudes } from "../context/SolicitudesContext.jsx";
+import SolicitarButton from "./SolicitarButton.jsx";
 import styles from "./DwellingCard.module.css";
 
 function DwellingCard({ vivienda, variante = "rejilla" }) {
-  const [solicitando, setSolicitando] = useState(false);
-  const { agregar } = useSolicitudes();
-
   const {
     id,
     adjudicada,
@@ -58,27 +52,8 @@ function DwellingCard({ vivienda, variante = "rejilla" }) {
         <Link to={`/viviendas/${id}`} className={styles.secundario}>
           Ver detalle
         </Link>
-        <button
-          type="button"
-          className={styles.primario}
-          onClick={() => setSolicitando(true)}
-        >
-          Solicitar
-        </button>
+        <SolicitarButton vivienda={vivienda} className={styles.primario} />
       </div>
-
-      {solicitando && (
-        <Modal titulo="Solicitud" onCerrar={() => setSolicitando(false)}>
-          <SolicitudForm
-            vivienda={vivienda}
-            onEnviar={(datos) => {
-              agregar({ ...datos, vivienda });
-              setSolicitando(false);
-            }}
-            onCancelar={() => setSolicitando(false)}
-          />
-        </Modal>
-      )}
     </article>
   );
 }

@@ -6,6 +6,7 @@ import DwellingPage from "./pages/DwellingPage.jsx";
 import Calls from "./pages/Calls.jsx";
 import CallPage from "./pages/CallPage.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Solicitud from "./pages/Solicitud.jsx";
 import MisSolicitudes from "./pages/MisSolicitudes.jsx";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/viviendas/:id" element={<DwellingPage />} />
         <Route path="/convocatorias" element={<Calls />} />
         <Route path="/convocatorias/:id" element={<CallPage />} />
+        <Route path="/solicitud" element={<Solicitud />} />
         <Route path="/mi-solicitud" element={<MisSolicitudes />} />
         <Route path="*" element={<NotFound />} />
       </Route>

@@ -1,16 +1,26 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useBorrador } from "../context/BorradorContext.jsx";
 import styles from "./Header.module.css";
 
 const enlaces = [
   { to: "/", texto: "Inicio" },
   { to: "/viviendas", texto: "Buscar vivienda" },
   { to: "/convocatorias", texto: "Convocatorias" },
+  { to: "/solicitud", texto: "Solicitud" },
   { to: "/mi-solicitud", texto: "Mis solicitudes" },
 ];
 
 export default function Header() {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const { borrador } = useBorrador();
+  const elegidas = borrador.viviendas.length;
+
+  // Junto a "Solicitud", cuántas viviendas hay elegidas.
+  function texto(enlace) {
+    const conNumero = enlace.to === "/solicitud" && elegidas > 0;
+    return conNumero ? `${enlace.texto} (${elegidas})` : enlace.texto;
+  }
 
   return (
     <header className={styles.header}>
@@ -22,7 +32,7 @@ export default function Header() {
       <nav className={styles.nav} aria-label="Principal">
         {enlaces.map((enlace) => (
           <NavLink key={enlace.to} to={enlace.to} end={enlace.to === "/"}>
-            {enlace.texto}
+            {texto(enlace)}
           </NavLink>
         ))}
       </nav>
@@ -46,7 +56,7 @@ export default function Header() {
               end={enlace.to === "/"}
               onClick={() => setMenuAbierto(false)}
             >
-              {enlace.texto}
+              {texto(enlace)}
             </NavLink>
           ))}
         </nav>

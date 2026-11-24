@@ -1,17 +1,11 @@
-import { useState } from "react";
 import formatLocation from "../utils/formatLocation.jsx";
 import Specs from "./ui/Specs.jsx";
 import Rent from "./ui/Rent.jsx";
 import Badge from "./ui/badge.jsx";
-import Modal from "./Modal.jsx";
-import SolicitudForm from "./SolicitudForm.jsx";
-import { useSolicitudes } from "../context/SolicitudesContext.jsx";
+import SolicitarButton from "./SolicitarButton.jsx";
 import styles from "./DwellingDetail.module.css";
 
 function DwellingDetail({ vivienda }) {
-  const [solicitando, setSolicitando] = useState(false);
-  const { agregar } = useSolicitudes();
-
   const {
     adjudicada,
     referencia,
@@ -65,27 +59,12 @@ function DwellingDetail({ vivienda }) {
 
       {!adjudicada && (
         <div className={styles.acciones}>
-          <button
-            type="button"
-            className={styles.primario}
-            onClick={() => setSolicitando(true)}
-          >
-            Solicitar esta vivienda
-          </button>
-        </div>
-      )}
-
-      {solicitando && (
-        <Modal titulo="Solicitud" onCerrar={() => setSolicitando(false)}>
-          <SolicitudForm
+          <SolicitarButton
             vivienda={vivienda}
-            onEnviar={(datos) => {
-              agregar({ ...datos, vivienda });
-              setSolicitando(false);
-            }}
-            onCancelar={() => setSolicitando(false)}
+            className={styles.primario}
+            texto="Solicitar esta vivienda"
           />
-        </Modal>
+        </div>
       )}
     </article>
   );
