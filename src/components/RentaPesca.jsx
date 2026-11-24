@@ -49,14 +49,20 @@ function RentaPesca({ valor, onCambio, min, max }) {
   }
 
   function teclado(e) {
-    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-      e.preventDefault();
-      onCambio(limitar(valor + 10));
-    }
-    if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-      e.preventDefault();
-      onCambio(limitar(valor - 10));
-    }
+    const teclas = {
+      ArrowRight: valor + 10,
+      ArrowUp: valor + 10,
+      ArrowLeft: valor - 10,
+      ArrowDown: valor - 10,
+      PageUp: valor + 100,
+      PageDown: valor - 100,
+      Home: min,
+      End: max,
+    };
+    if (!(e.key in teclas)) return;
+
+    e.preventDefault();
+    onCambio(limitar(teclas[e.key]));
   }
 
   return (

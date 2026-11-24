@@ -141,7 +141,18 @@
   border-radius: 40% 40% var(--radio) var(--radio);
 }
 
-.ayuda {
-  max-width: 200px;
-  color: var(--color-texto-suave);
+/* En móvil es un bloque más del panel, con la escena centrada. */
+@media (max-width: 768px) {
+  .pesca {
+    align-items: center;
+    padding: var(--espacio-3);
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+  }
+
+  .etiqueta {
+    align-self: flex-start;
+    font-size: 1rem;
+  }
 }

@@ -27,6 +27,8 @@ function SearchBar({
           <option value="ninguno">Sin ordenar</option>
           <option value="asc">Renta de menor a mayor</option>
           <option value="desc">Renta de mayor a menor</option>
+          <option value="superficie-asc">Superficie de menor a mayor</option>
+          <option value="superficie-desc">Superficie de mayor a menor</option>
         </select>
       </label>
 

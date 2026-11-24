@@ -1,4 +1,5 @@
 .hero {
+  padding: var(--espacio-5);
   background: linear-gradient(
     135deg,
     var(--color-cabecera),

@@ -1,0 +1,56 @@
+.paginacion,
+.numeros {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.numeros {
+  padding: 0;
+  list-style: none;
+}
+
+.boton,
+.activo {
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--espacio-2);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--color-primario);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.paginacion > .boton {
+  padding-inline: var(--espacio-3);
+}
+
+.boton {
+  color: var(--color-primario);
+  background: var(--color-superficie);
+}
+
+.boton:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.boton:disabled {
+  color: var(--color-texto-suave);
+  background: transparent;
+  border: 1px dashed var(--color-borde);
+  cursor: not-allowed;
+}
+
+.activo {
+  color: var(--color-superficie);
+  background: var(--color-primario);
+  text-decoration: underline;
+}
+
+.hueco {
+  color: var(--color-texto-suave);
+}
