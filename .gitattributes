@@ -1,0 +1,2 @@
+# Que git no cambie los finales de línea del fichero de datos recibido
+db.original.json -text
