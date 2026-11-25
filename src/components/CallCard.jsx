@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./CallCard.module.css";
 
+// Tarjeta de una convocatoria. El botón solo sale si está abierta y, si
+// rentaDesde es null (como en 26-6-MAD), pone "Sin viviendas libres".
 function CallCard({ convocatoria }) {
   const { id, codigo, provincia, estado, fechaCierre, unidades, rentaDesde } =
     convocatoria;

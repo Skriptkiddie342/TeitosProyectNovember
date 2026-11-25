@@ -3,6 +3,8 @@ import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import styles from "./Layout.module.css";
 
+// Estructura común de todas las páginas: cabecera, contenido y pie. Outlet es
+// el hueco donde React Router pone la página de cada ruta.
 export default function Layout() {
   return (
     <>

@@ -1,5 +1,7 @@
 import { useBorrador } from "../context/BorradorContext.jsx";
 
+// Botón que añade una vivienda al borrador, o la quita si ya estaba. No sale si
+// la vivienda está adjudicada.
 function SolicitarButton({ vivienda, className, texto = "Solicitar" }) {
   const { borrador, dispatch } = useBorrador();
 

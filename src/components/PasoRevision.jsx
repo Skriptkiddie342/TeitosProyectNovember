@@ -4,6 +4,8 @@ import { PERSONAS_MAXIMO } from "../reglas/acceso.js";
 import { euros } from "../utils/euros.js";
 import styles from "./SolicitudForm.module.css";
 
+// Paso 4 del formulario: resumen de todo antes de enviar, con botones para
+// editar.
 function PasoRevision({ personales, hogar, elegidas, estado, onEditar }) {
   const cargadas = estado === "ok" || estado === "vacio";
   const personas = Number(hogar.personas);
@@ -15,6 +17,7 @@ function PasoRevision({ personales, hogar, elegidas, estado, onEditar }) {
     ["Correo electrónico", personales.correo],
   ];
 
+  // Lista de [título, valor] que se muestra en el resumen.
   const datos = [
     [
       "Personas en la vivienda",

@@ -10,10 +10,13 @@ import { medidaDe } from "../utils/accesibilidad.js";
 import styles from "./Buscador.module.css";
 import pagina from "./Pagina.module.css";
 
+// Límites de la renta en el filtro y número de viviendas por página.
 const RENTA_MIN = 140;
 const RENTA_MAX = 1570;
 const POR_PAGINA = 12;
 
+// Quita tildes, eñes y mayúsculas para poder comparar textos: "CORUÑA" ->
+// "coruna". NFD separa cada letra de su marca y replace borra las marcas.
 function normalizar(texto) {
   return String(texto)
     .normalize("NFD")
@@ -21,6 +24,8 @@ function normalizar(texto) {
     .toLowerCase();
 }
 
+// Ordena la lista por renta o por superficie. [...lista] hace una copia, porque
+// sort cambia la lista original.
 function ordenar(lista, orden) {
   if (orden === "asc") return [...lista].sort((a, b) => a.renta - b.renta);
   if (orden === "desc") return [...lista].sort((a, b) => b.renta - a.renta);
@@ -33,20 +38,26 @@ function ordenar(lista, orden) {
   return lista;
 }
 
+// Lee un número de la URL.
 // null si el parámetro falta o no es un número entero.
 function leerEntero(texto) {
   return /^\d+$/.test(texto ?? "") ? Number(texto) : null;
 }
 
+// Lee de la URL las personas del hogar, con 6 como máximo. Si no hay, null.
 function leerPersonas(texto) {
   const personas = leerEntero(texto);
   return personas ? Math.min(personas, PERSONAS_MAXIMO) : null;
 }
 
+// Página del buscador. Los filtros se guardan en la URL con useSearchParams,
+// así se pueden compartir y no se pierden al recargar.
 export default function Buscador() {
   const [params, setParams] = useSearchParams();
   const { viviendas, estado } = useDwellings();
 
+  // Se leen los filtros de la URL. get lee un valor y getAll, todos los
+  // repetidos.
   const busqueda = params.get("q") ?? "";
   const orden = params.get("orden") ?? "ninguno";
   const vista = params.get("vista") ?? "rejilla";
@@ -68,6 +79,8 @@ export default function Buscador() {
     listado.current?.scrollIntoView();
   }, [paginaPedida]);
 
+  // Cambia un filtro en la URL. Si tiene el valor por defecto, lo quita para
+  // dejar la dirección limpia. replace evita llenar el historial al escribir.
   function actualizar(clave, valor, porDefecto) {
     setParams(
       (anterior) => {
@@ -82,6 +95,8 @@ export default function Buscador() {
     );
   }
 
+  // Marca o desmarca una casilla (provincia o accesibilidad): si el valor ya
+  // está en la URL lo quita, y si no está, lo añade.
   function alternar(clave, valor) {
     setParams(
       (anterior) => {
@@ -99,6 +114,7 @@ export default function Buscador() {
     );
   }
 
+  // Quita todos los filtros de la URL, menos la vista (rejilla o lista).
   function limpiar() {
     setParams(
       (anterior) => {
@@ -117,6 +133,7 @@ export default function Buscador() {
     );
   }
 
+  // Mientras no haya viviendas, se muestra cargando, error o vacío.
   if (estado !== "ok") {
     return (
       <>
@@ -141,11 +158,13 @@ export default function Buscador() {
     );
   }
 
+  // Provincias sin repetir y por orden alfabético, para las casillas.
   const provincias = [...new Set(viviendas.map((v) => v.provincia))].sort(
     (a, b) => a.localeCompare(b),
   );
 
   const q = normalizar(busqueda.trim());
+  // Se quedan las viviendas que cumplen todos los filtros a la vez (&&).
   const filtradas = ordenar(viviendas, orden).filter(
     (v) =>
       [v.municipio, v.provincia, v.referencia].some((c) =>
@@ -157,6 +176,8 @@ export default function Buscador() {
       v.renta <= rentaMax,
   );
 
+  // Paginación: se calcula cuántas páginas hay, se corrige la página si no
+  // existe y se cortan (slice) las viviendas que tocan.
   const totalPaginas = Math.max(1, Math.ceil(filtradas.length / POR_PAGINA));
   const paginaActual = Math.min(Math.max(1, paginaPedida), totalPaginas);
   const visibles = filtradas.slice(
@@ -164,6 +185,7 @@ export default function Buscador() {
     paginaActual * POR_PAGINA,
   );
 
+  // Cambia de página guardándola en la URL.
   // Sin replace: el botón Atrás del navegador vuelve a la página anterior.
   function cambiarPagina(numero) {
     if (numero === paginaActual) return;

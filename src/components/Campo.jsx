@@ -1,8 +1,11 @@
 import styles from "./SolicitudForm.module.css";
 
+// Campo de formulario reutilizable: junta la etiqueta, el control, la ayuda y
+// el error.
 // children recibe los atributos que enlazan el control con su etiqueta,
 // su ayuda y su error.
 function Campo({ nombre, etiqueta, ayuda, error, children }) {
+  // Ids de la ayuda y del error, para que los lea el lector de pantalla.
   const descripcion = [
     ayuda && `${nombre}-ayuda`,
     error && `${nombre}-error`,

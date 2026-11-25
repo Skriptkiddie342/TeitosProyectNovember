@@ -1,6 +1,8 @@
 import Modal from "./Modal.jsx";
 import styles from "./ConfirmModal.module.css";
 
+// Ventana que pide confirmar una acción. peligro pone el botón en rojo y
+// enviando lo bloquea mientras se guarda.
 function ConfirmModal({
   titulo,
   accion,
@@ -11,6 +13,7 @@ function ConfirmModal({
   onCerrar,
   children,
 }) {
+  // Impide cerrar con Cancelar mientras se está enviando.
   function cancelar(e) {
     if (enviando) e.preventDefault();
   }

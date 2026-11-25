@@ -1,5 +1,7 @@
 import styles from "./SolicitudForm.module.css";
 
+// Mensaje de cargando o de error en el formulario. Si todo va bien, no muestra
+// nada.
 function EstadoViviendas({ estado }) {
   if (estado === "cargando") {
     return <p role="status">Cargando viviendas...</p>;

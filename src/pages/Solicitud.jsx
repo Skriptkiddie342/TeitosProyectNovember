@@ -1,6 +1,7 @@
 import SolicitudForm from "../components/SolicitudForm.jsx";
 import styles from "./Pagina.module.css";
 
+// Página de la solicitud: el título y el formulario por pasos.
 export default function Solicitud() {
   return (
     <>

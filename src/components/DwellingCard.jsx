@@ -6,6 +6,8 @@ import Badge from "./ui/badge.jsx";
 import SolicitarButton from "./SolicitarButton.jsx";
 import styles from "./DwellingCard.module.css";
 
+// Tarjeta de una vivienda en el listado. variante cambia el aspecto: rejilla o
+// lista.
 function DwellingCard({ vivienda, variante = "rejilla" }) {
   const {
     id,

@@ -2,6 +2,7 @@ import CallCard from "../components/CallCard.jsx";
 import useCalls from "../hooks/useCalls.js";
 import styles from "./Pagina.module.css";
 
+// Página con todas las convocatorias, una tarjeta por cada una.
 export default function Calls() {
   const { convocatorias, estado } = useCalls();
 

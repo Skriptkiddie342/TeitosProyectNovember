@@ -4,10 +4,13 @@ import useCallDwellings from "../hooks/useCallDwellings.js";
 import DwellingList from "../components/DwellingList.jsx";
 import styles from "./Pagina.module.css";
 
+// Página de una convocatoria: muestra sus datos y sus viviendas libres. El id
+// sale de la URL (/convocatorias/9).
 export default function CallPage() {
   const { id } = useParams();
   const { convocatoria, estado } = useCall(id);
   const { viviendas, estado: estadoViviendas } = useCallDwellings(id);
+  // Solo se enseñan las viviendas que no están adjudicadas.
   const libres = viviendas.filter((v) => !v.adjudicada);
 
   if (estado === "cargando") {

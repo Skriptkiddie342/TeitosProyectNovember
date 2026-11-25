@@ -1,5 +1,6 @@
 import styles from "./Footer.module.css";
 
+// Pie de página.
 function Footer() {
   return (
     <footer className={styles.footer}>

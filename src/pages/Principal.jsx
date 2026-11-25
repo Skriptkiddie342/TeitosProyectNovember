@@ -3,6 +3,7 @@ import CallCard from "../components/CallCard.jsx";
 import useCalls from "../hooks/useCalls.js";
 import styles from "./Principal.module.css";
 
+// Textos de la sección "Cómo funciona".
 const pasos = [
   "Busca una vivienda que se ajuste a lo que necesitas",
   "Consulta la convocatoria abierta de tu provincia",
@@ -10,6 +11,7 @@ const pasos = [
   "Espera al sorteo y a la adjudicación",
 ];
 
+// Página de inicio: portada, convocatorias abiertas y pasos a seguir.
 export default function Principal() {
   const { convocatorias, estado } = useCalls("?estado=abierta");
 

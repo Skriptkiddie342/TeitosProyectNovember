@@ -11,6 +11,7 @@ const TEXTO_MAXIMO = 300;
 const NOMBRE_MINIMO = 3;
 const LETRAS_DNI = "TRWAGMYFPDXBNJZSQVHLCKE";
 
+// Devuelve la fecha de hoy como texto.
 // Fecha local en formato AAAA-MM-DD, el mismo que usa <input type="date">.
 export function fechaDeHoy() {
   const hoy = new Date();
@@ -19,6 +20,8 @@ export function fechaDeHoy() {
   return `${hoy.getFullYear()}-${mes}-${dia}`;
 }
 
+// Convierte el texto del campo en un número de personas (de 1 a 6). Si no es
+// válido, devuelve null.
 function leerPersonas(texto) {
   const numero = Number(texto);
   const valido =
@@ -26,10 +29,13 @@ function leerPersonas(texto) {
   return valido ? numero : null;
 }
 
+// Convierte el texto del campo en un número. Solo admite cifras; si no, null.
 function leerIngresos(texto) {
   return /^\d+$/.test(texto) ? Number(texto) : null;
 }
 
+// Revisa los ingresos: que se hayan escrito y que entren en el margen. Devuelve
+// el mensaje de error, o null si están bien.
 function errorIngresos(texto, personas) {
   const ingresos = leerIngresos(texto);
   if (ingresos === null) {
@@ -42,6 +48,8 @@ function errorIngresos(texto, personas) {
   return `Los ingresos admitidos${hogar} van de ${euros(minimo)} a ${euros(maximo)} al año.`;
 }
 
+// Revisa la fecha: que tenga el formato correcto y que no sea anterior a hoy.
+// Devuelve el mensaje de error, o null si está bien.
 function errorFecha(fecha, hoy) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
     return "Indica la fecha de entrada deseada.";
@@ -49,6 +57,8 @@ function errorFecha(fecha, hoy) {
   return fecha < hoy ? "La fecha no puede ser anterior a hoy." : null;
 }
 
+// Revisa que un texto libre no pase de 300 caracteres. Devuelve el mensaje de
+// error, o null si está bien.
 function errorTexto(texto) {
   if (texto.length <= TEXTO_MAXIMO) return null;
   return `Como máximo ${TEXTO_MAXIMO} caracteres: llevas ${texto.length}.`;
@@ -109,6 +119,8 @@ export function validarPersonales(personales) {
   });
 }
 
+// Valida todos los campos del paso 2. Si no hay ningún error, devuelve un
+// objeto vacío.
 // Devuelve solo los campos con error: { campo: "texto del error" }
 export function validarHogar(hogar, hoy = fechaDeHoy()) {
   const personas = leerPersonas(hogar.personas);
@@ -124,6 +136,8 @@ export function validarHogar(hogar, hoy = fechaDeHoy()) {
   });
 }
 
+// Valida una vivienda elegida: que siga disponible, que su plazo esté abierto y
+// que su renta no pase del 30 %. Devuelve el mensaje de error, o null si vale.
 // Una vivienda undefined es que ya no está entre las libres.
 export function errorVivienda(vivienda, hogar, convocatorias) {
   if (!vivienda) return "Ya no está disponible. Quítala para continuar.";

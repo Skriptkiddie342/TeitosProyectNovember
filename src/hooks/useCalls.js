@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { API } from "../api/api.js";
 
+// Hook que carga las convocatorias. Con query se filtran en el servidor, por
+// ejemplo "?estado=abierta". Devuelve la lista y el estado: cargando, ok, vacio
+// o error.
 export default function useCalls(query = "") {
   const [convocatorias, setConvocatorias] = useState([]);
   const [estado, setEstado] = useState("cargando");
 
+  // Hace la petición al entrar y cada vez que cambia query.
   useEffect(() => {
     const controller = new AbortController();
     setEstado("cargando");
@@ -22,6 +26,7 @@ export default function useCalls(query = "") {
         if (error.name !== "AbortError") setEstado("error");
       });
 
+    // Al salir de la pantalla se cancela la petición.
     return () => controller.abort();
   }, [query]);
 

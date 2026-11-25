@@ -5,6 +5,9 @@ import App from "./App.jsx";
 import { BorradorProvider } from "./context/BorradorContext.jsx";
 import "./styles/index.css";
 
+// Arranca la aplicación dentro del <div id="root"> de index.html. BrowserRouter
+// permite usar rutas y BorradorProvider comparte el borrador de la solicitud
+// con todos los componentes.
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter useTransitions={false}>

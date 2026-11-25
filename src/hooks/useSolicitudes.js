@@ -9,6 +9,8 @@ import { obtenerViviendas } from "../api/viviendas.js";
 import { sePuedeModificar } from "../reglas/plazo.js";
 import { buscarPorId, mismoId } from "../utils/ids.js";
 
+// Pide las solicitudes, las convocatorias y las viviendas elegidas, y lo junta
+// todo en una sola lista, indicando cuáles se pueden modificar.
 // Une cada solicitud con sus viviendas: _embed no funciona con estos datos.
 async function cargar(signal) {
   const [solicitudes, convocatorias] = await Promise.all([
@@ -32,10 +34,13 @@ async function cargar(signal) {
   });
 }
 
+// Hook de la página Mis solicitudes. Devuelve la lista, el estado (cargando,
+// ok, vacio o error) y las funciones para retirar y marcar.
 export default function useSolicitudes() {
   const [solicitudes, setSolicitudes] = useState([]);
   const [estado, setEstado] = useState("cargando");
 
+  // Carga los datos una vez, al entrar ([] = no depende de nada).
   useEffect(() => {
     const controller = new AbortController();
 
@@ -48,10 +53,13 @@ export default function useSolicitudes() {
         if (error.name !== "AbortError") setEstado("error");
       });
 
+    // Al salir de la pantalla se cancela la petición.
     return () => controller.abort();
   }, []);
 
-  // Las dos lanzan el error del servidor: quien las llama decide qué mostrar.
+  // Retira una solicitud: la borra del servidor y después de la pantalla.
+  // retirar y marcar lanzan el error del servidor: quien las llama decide qué
+  // mostrar.
   async function retirar(id) {
     try {
       await retirarSolicitud(id);
@@ -62,6 +70,7 @@ export default function useSolicitudes() {
     setSolicitudes((actuales) => actuales.filter((s) => !mismoId(s.id, id)));
   }
 
+  // Marca una solicitud como revisada o sin revisar, y actualiza la pantalla.
   async function marcar(id, revisada) {
     const solicitud = await marcarSolicitud(id, revisada);
     setSolicitudes((actuales) =>

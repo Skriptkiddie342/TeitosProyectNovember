@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import useDwellingCount from "../hooks/useDwellingCount.js";
 import styles from "./Hero.module.css";
 
+// Portada de la página de inicio, con el número de viviendas disponibles.
 function Hero() {
   const { total, estado } = useDwellingCount();
 

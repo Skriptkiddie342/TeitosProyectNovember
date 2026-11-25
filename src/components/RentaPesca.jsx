@@ -1,20 +1,27 @@
 import { useRef } from "react";
 import styles from "./RentaPesca.module.css";
 
+// Largo máximo del sedal en píxeles y euros que suma una vuelta de carrete.
 const LARGO = 150;
 const EUROS_POR_VUELTA = 200;
 
+// Control de la renta máxima en forma de caña de pescar: se gira el carrete con
+// el ratón o el dedo, o se usan las flechas del teclado.
 function RentaPesca({ valor, onCambio, min, max }) {
   const anguloAnterior = useRef(null);
   const exacto = useRef(valor);
 
+  // Se pasa la renta a largo del sedal y a giro de la manivela.
   const largo = ((valor - min) / (max - min)) * LARGO;
   const giro = ((valor - min) / EUROS_POR_VUELTA) * 360;
 
+  // Evita que el valor se salga del mínimo o del máximo.
   function limitar(numero) {
     return Math.min(max, Math.max(min, numero));
   }
 
+  // Calcula en qué ángulo está el puntero respecto al centro del carrete, en
+  // grados.
   function angulo(e) {
     const caja = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - (caja.left + caja.width / 2);
@@ -22,17 +29,21 @@ function RentaPesca({ valor, onCambio, min, max }) {
     return (Math.atan2(y, x) * 180) / Math.PI;
   }
 
+  // Al pulsar el carrete, guarda el ángulo y el valor de partida.
   function empezar(e) {
     e.currentTarget.setPointerCapture(e.pointerId);
     anguloAnterior.current = angulo(e);
     exacto.current = valor;
   }
 
+  // Al mover el puntero, calcula cuánto se ha girado y lo convierte en euros,
+  // redondeando de 10 en 10.
   function girar(e) {
     if (anguloAnterior.current === null) return;
 
     const actual = angulo(e);
     let diferencia = actual - anguloAnterior.current;
+    // Corrige el salto que hay al pasar de 180 a -180 grados.
     if (diferencia > 180) diferencia -= 360;
     if (diferencia < -180) diferencia += 360;
     anguloAnterior.current = actual;
@@ -44,10 +55,13 @@ function RentaPesca({ valor, onCambio, min, max }) {
     if (nuevo !== valor) onCambio(nuevo);
   }
 
+  // Al soltar el carrete, deja de girar.
   function terminar() {
     anguloAnterior.current = null;
   }
 
+  // Permite cambiar la renta con el teclado: flechas (10 €), Re Pág y Av Pág
+  // (100 €), Inicio (mínimo) y Fin (máximo).
   function teclado(e) {
     const teclas = {
       ArrowRight: valor + 10,

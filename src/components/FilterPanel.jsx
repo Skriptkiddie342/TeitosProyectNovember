@@ -9,11 +9,14 @@ import { MEDIDAS } from "../utils/accesibilidad.js";
 import { euros, soloEuros } from "../utils/euros.js";
 import styles from "./FilterPanel.module.css";
 
+// Lista [1, 2, 3, 4, 5, 6] para el desplegable.
 const OPCIONES_PERSONAS = Array.from(
   { length: PERSONAS_MAXIMO },
   (_, i) => i + 1,
 );
 
+// Panel de filtros: provincia, personas, ingresos, accesibilidad y renta
+// máxima. No guarda los filtros: avisa al buscador con las funciones on...
 function FilterPanel({
   provincias,
   marcadas,
@@ -29,6 +32,7 @@ function FilterPanel({
   min,
   max,
 }) {
+  // Margen de ingresos para ese hogar y si los escritos se salen de él.
   const { minimo, maximo } = limitesIngresos(personas);
   const fueraDeMargen =
     ingresos !== null && !ingresosAdmitidos(ingresos, personas);
@@ -36,6 +40,7 @@ function FilterPanel({
   // Si el enlace ya trae ingresos no admitidos se abre, para que se vea por qué
   // no hay resultados.
   const [abierto, setAbierto] = useState(fueraDeMargen);
+  // Cuántos filtros hay puestos, para el botón del móvil.
   const activos =
     marcadas.length +
     medidas.length +

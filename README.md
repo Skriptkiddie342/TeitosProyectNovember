@@ -4,11 +4,6 @@ Portal de alquiler asequible: una aplicación de una sola página (SPA) hecha co
 
 Proyecto 1 de PMDM, 2º DAM.
 
-- **Diseño en Figma:** <!-- PEGAR AQUÍ EL ENLACE, con permiso de lectura --> _pendiente_
-- **Aplicación publicada:** <!-- PEGAR AQUÍ LA URL DE NETLIFY O VERCEL --> _pendiente_
-
-## Arrancarlo en otra máquina
-
 Hace falta [Node.js](https://nodejs.org/) 22.12 o posterior (lo exige json-server) y tener libres los puertos 5173 y 3001.
 
 ```bash
@@ -27,11 +22,11 @@ Después, abre <http://localhost:5173>. El servidor de datos queda en <http://lo
 
 ### Comprobar que el servidor responde bien
 
-| Petición                                                             | Devuelve                                    |
-| -------------------------------------------------------------------- | ------------------------------------------- |
-| <http://localhost:3001/viviendas?provincia=Pontevedra&dormitorios=2> | 30 viviendas                                |
-| <http://localhost:3001/viviendas?renta_gte=300&renta_lte=500>        | 384 viviendas                               |
-| <http://localhost:3001/viviendas?_page=1&_per_page=12>               | Un objeto con 12 viviendas en `data`        |
+| Petición                                                             | Devuelve                                     |
+| -------------------------------------------------------------------- | -------------------------------------------- |
+| <http://localhost:3001/viviendas?provincia=Pontevedra&dormitorios=2> | 30 viviendas                                 |
+| <http://localhost:3001/viviendas?renta_gte=300&renta_lte=500>        | 384 viviendas                                |
+| <http://localhost:3001/viviendas?_page=1&_per_page=12>               | Un objeto con 12 viviendas en `data`         |
 | <http://localhost:3001/solicitudes>                                  | Una lista vacía, si no se ha enviado ninguna |
 
 ### Si algo falla
@@ -54,30 +49,30 @@ Después, abre <http://localhost:5173>. El servidor de datos queda en <http://lo
 
 ## Rutas de la aplicación
 
-| Ruta                 | Página                                                                  |
-| -------------------- | ----------------------------------------------------------------------- |
-| `/`                  | Inicio, con las convocatorias abiertas                                  |
-| `/viviendas`         | Buscador: búsqueda, filtros, orden y paginación                         |
-| `/viviendas/:id`     | Detalle de una vivienda                                                 |
-| `/convocatorias`     | Todas las convocatorias                                                 |
-| `/convocatorias/:id` | Detalle de una convocatoria y sus viviendas libres                      |
-| `/solicitud`         | Solicitud en cuatro pasos: datos personales, hogar, viviendas y revisión |
+| Ruta                 | Página                                                                    |
+| -------------------- | ------------------------------------------------------------------------- |
+| `/`                  | Inicio, con las convocatorias abiertas                                    |
+| `/viviendas`         | Buscador: búsqueda, filtros, orden y paginación                           |
+| `/viviendas/:id`     | Detalle de una vivienda                                                   |
+| `/convocatorias`     | Todas las convocatorias                                                   |
+| `/convocatorias/:id` | Detalle de una convocatoria y sus viviendas libres                        |
+| `/solicitud`         | Solicitud en cuatro pasos: datos personales, hogar, viviendas y revisión  |
 | `/mi-solicitud`      | Solicitudes enviadas: consultar, modificar con el plazo abierto y retirar |
-| Cualquier otra       | Página 404                                                              |
+| Cualquier otra       | Página 404                                                                |
 
 El buscador guarda su estado en la URL, así que cualquier búsqueda se puede enlazar:
 
-| Parámetro       | Valores                                                           |
-| --------------- | ----------------------------------------------------------------- |
-| `q`             | Municipio, provincia o referencia                                 |
-| `provincia`     | Nombre de la provincia; se puede repetir                          |
-| `personas`      | De 1 a 6 (6 es «6 o más»)                                         |
-| `ingresos`      | Ingresos netos anuales del hogar, en euros                        |
+| Parámetro       | Valores                                                                  |
+| --------------- | ------------------------------------------------------------------------ |
+| `q`             | Municipio, provincia o referencia                                        |
+| `provincia`     | Nombre de la provincia; se puede repetir                                 |
+| `personas`      | De 1 a 6 (6 es «6 o más»)                                                |
+| `ingresos`      | Ingresos netos anuales del hogar, en euros                               |
 | `accesibilidad` | `adaptada`, `practicable`, `sin_adaptar` o `sin_datos`; se puede repetir |
-| `rentaMax`      | Renta máxima al mes, en euros                                     |
-| `orden`         | `asc` y `desc` (renta), `superficie-asc` y `superficie-desc`      |
-| `vista`         | `lista`; sin el parámetro, rejilla                                |
-| `pagina`        | Número de página; sin el parámetro, la 1                          |
+| `rentaMax`      | Renta máxima al mes, en euros                                            |
+| `orden`         | `asc` y `desc` (renta), `superficie-asc` y `superficie-desc`             |
+| `vista`         | `lista`; sin el parámetro, rejilla                                       |
+| `pagina`        | Número de página; sin el parámetro, la 1                                 |
 
 Ejemplo: `/viviendas?provincia=Lugo&personas=2&ingresos=24000&orden=superficie-desc`
 
@@ -103,10 +98,10 @@ src/
 
 El proyecto está preparado para Netlify y para Vercel; basta con uno de los dos. Importa el repositorio desde su web y acepta la configuración que detecta: el comando `npm run build` y la carpeta `dist`.
 
-| Servicio | Configuración                  |
-| -------- | ------------------------------ |
-| Netlify  | [netlify.toml](netlify.toml)   |
-| Vercel   | [vercel.json](vercel.json)     |
+| Servicio | Configuración                |
+| -------- | ---------------------------- |
+| Netlify  | [netlify.toml](netlify.toml) |
+| Vercel   | [vercel.json](vercel.json)   |
 
 Los dos ficheros incluyen la redirección que necesita React Router. Las rutas como `/viviendas/773` no existen como ficheros: sin la redirección, al recargar o abrir un enlace el servicio respondería con su propio 404. Con ella responde siempre con `index.html`, y React Router muestra la página que toca, incluida la 404 de la aplicación.
 
@@ -116,15 +111,15 @@ Netlify y Vercel publican solo la aplicación. El servidor de datos no se public
 
 La aplicación no se rompe ni muestra páginas en blanco. Esto es lo que se ve:
 
-| Página                                  | Sin servidor de datos                                                                     |
-| --------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `/`                                     | Se ve la portada; el número de viviendas y las convocatorias muestran un error            |
-| `/viviendas`                            | «No se han podido cargar las viviendas.»                                                  |
-| `/viviendas/:id`                        | «No se ha podido cargar la vivienda», con enlace al buscador                              |
-| `/convocatorias`, `/convocatorias/:id`  | Mensaje de error; el detalle enlaza con el listado                                        |
-| `/solicitud`                            | Los pasos 1 y 2 funcionan y validan. En el paso 3 avisa de que no puede comprobar las viviendas y no deja continuar |
-| `/mi-solicitud`                         | «No se han podido cargar las solicitudes.»                                                |
-| Ruta desconocida                        | Página 404                                                                                |
+| Página                                 | Sin servidor de datos                                                                                       |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `/`                                    | Se ve la portada; el número de viviendas y las convocatorias muestran un error                              |
+| `/viviendas`                           | «No se han podido cargar las viviendas.»                                                                    |
+| `/viviendas/:id`                       | «No se ha podido cargar la vivienda», con enlace al buscador                                                |
+| `/convocatorias`, `/convocatorias/:id` | Mensaje de error; el detalle enlaza con el listado                                                          |
+| `/solicitud`                           | Los pasos 1 y 2 funcionan y validan. En el paso 3 avisa de que no puede comprobar las viviendas y no deja continuar |
+| `/mi-solicitud`                        | «No se han podido cargar las solicitudes.»                                                                  |
+| Ruta desconocida                       | Página 404                                                                                                  |
 
 - **Sí funciona:** la navegación, el menú, recargar cualquier ruta, los enlaces directos y los dos primeros pasos de la solicitud. El borrador se guarda en el navegador (`localStorage`).
 - **No funciona:** buscar viviendas, ver detalles, añadir viviendas a la solicitud y enviar, modificar o retirar solicitudes.

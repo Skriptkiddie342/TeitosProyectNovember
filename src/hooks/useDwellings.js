@@ -5,16 +5,20 @@ import { obtenerViviendasLibres } from "../api/viviendas.js";
 // navegador recupera la posición. Aun así se vuelve a pedir siempre.
 let ultimas = null;
 
+// Dice si una lista cargada está vacía ("vacio") o tiene datos ("ok").
 function estadoDe(lista) {
   return lista.length === 0 ? "vacio" : "ok";
 }
 
+// Hook que carga las viviendas libres. Devuelve la lista y el estado: cargando,
+// ok, vacio o error.
 export default function useDwellings() {
   const [viviendas, setViviendas] = useState(ultimas ?? []);
   const [estado, setEstado] = useState(
     ultimas ? estadoDe(ultimas) : "cargando",
   );
 
+  // Hace la petición una vez, al entrar ([] = no depende de nada).
   useEffect(() => {
     const controller = new AbortController();
 
@@ -28,6 +32,7 @@ export default function useDwellings() {
         if (error.name !== "AbortError") setEstado("error");
       });
 
+    // Al salir de la pantalla se cancela la petición.
     return () => controller.abort();
   }, []);
 

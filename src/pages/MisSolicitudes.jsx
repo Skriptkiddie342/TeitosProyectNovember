@@ -11,6 +11,8 @@ import pagina from "./Pagina.module.css";
 const SIN_SERVIDOR =
   "El servidor no responde. Comprueba que está en marcha y vuelve a intentarlo.";
 
+// Nombre de una solicitud: la referencia de su primera vivienda y cuántas más
+// tiene.
 function nombreDe({ elegidas }) {
   if (elegidas.length === 0) return "Solicitud sin viviendas";
   const [{ id, vivienda }, ...otras] = elegidas;
@@ -18,6 +20,7 @@ function nombreDe({ elegidas }) {
   return otras.length === 0 ? primera : `${primera} y ${otras.length} más`;
 }
 
+// Texto con los lugares de sus viviendas, sin repetir.
 function lugaresDe({ elegidas }) {
   const lugares = elegidas
     .filter(({ vivienda }) => vivienda)
@@ -25,6 +28,8 @@ function lugaresDe({ elegidas }) {
   return [...new Set(lugares)].join(" · ");
 }
 
+// Página de las solicitudes enviadas: lista con filtros a un lado y detalle de
+// la elegida al otro.
 export default function MisSolicitudes() {
   const { solicitudes, estado, retirar, marcar } = useSolicitudes();
   const { dispatch } = useBorrador();
@@ -46,11 +51,13 @@ export default function MisSolicitudes() {
     if (state?.aviso) navegar(pathname, { replace: true, state: null });
   }, [state, pathname, navegar]);
 
+  // Cuando aparece un aviso, se le da el foco para que se lea.
   useEffect(() => {
     if (aviso) parrafoAviso.current.focus();
   }, [aviso]);
 
   const texto = ubicacion.toLowerCase();
+  // Solicitudes que cumplen los filtros de ubicación y de revisadas.
   const visibles = solicitudes.filter(
     (s) =>
       lugaresDe(s).toLowerCase().includes(texto) &&
@@ -59,23 +66,28 @@ export default function MisSolicitudes() {
   const seleccionada = visibles.find((s) => mismoId(s.id, seleccionadaId));
   const datos = seleccionada?.solicitud;
 
+  // Selecciona una solicitud de la lista y borra los mensajes anteriores.
   function elegir(id) {
     setSeleccionadaId(id);
     setError(null);
     setAviso(null);
   }
 
+  // Carga la solicitud en el borrador y lleva al formulario para modificarla.
   function editar() {
     dispatch({ type: "editar", solicitud: datos });
     navegar("/solicitud");
   }
 
+  // Abre el modal que pregunta si se quiere retirar.
   function pedirConfirmacion() {
     setError(null);
     setAviso(null);
     setConfirmando(true);
   }
 
+  // Retira la solicitud después de confirmarlo en el modal. Si falla, muestra
+  // el error.
   async function confirmarRetirada() {
     setEnviando(true);
     setError(null);
@@ -92,6 +104,7 @@ export default function MisSolicitudes() {
     }
   }
 
+  // Cambia la solicitud entre revisada y sin revisar.
   async function alternarRevisada() {
     setError(null);
     try {

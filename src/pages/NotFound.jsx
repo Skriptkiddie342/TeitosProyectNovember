@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./Pagina.module.css";
 
+// Página 404: se muestra cuando la dirección no existe.
 export default function NotFound() {
   return (
     <div className={styles.aviso}>

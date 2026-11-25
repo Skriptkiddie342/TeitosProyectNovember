@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useBorrador } from "../context/BorradorContext.jsx";
 import styles from "./Header.module.css";
 
+// Enlaces del menú.
 const enlaces = [
   { to: "/", texto: "Inicio" },
   { to: "/viviendas", texto: "Buscar vivienda" },
@@ -11,11 +12,13 @@ const enlaces = [
   { to: "/mi-solicitud", texto: "Mis solicitudes" },
 ];
 
+// Cabecera con el logo y el menú. El botón ☰ abre el menú desplegable.
 export default function Header() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const { borrador } = useBorrador();
   const elegidas = borrador.viviendas.length;
 
+  // Texto de cada enlace.
   // Junto a "Solicitud", cuántas viviendas hay elegidas.
   function texto(enlace) {
     const conNumero = enlace.to === "/solicitud" && elegidas > 0;

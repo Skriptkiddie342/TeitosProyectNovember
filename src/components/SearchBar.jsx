@@ -1,5 +1,7 @@
 import styles from "./SearchBar.module.css";
 
+// Barra del buscador: texto, orden, vista, botón de limpiar y número de
+// resultados.
 function SearchBar({
   busqueda,
   onBusqueda,

@@ -3,6 +3,8 @@ import useDwelling from "../hooks/useDwelling.js";
 import DwellingDetail from "../components/DwellingDetail.jsx";
 import styles from "./Pagina.module.css";
 
+// Página de una vivienda. El id sale de la URL (/viviendas/773). Según el
+// estado muestra cargando, que no existe, el error o el detalle.
 export default function DwellingPage() {
   const { id } = useParams();
   const { vivienda, estado } = useDwelling(id);

@@ -2,6 +2,7 @@ import styles from "./Pagination.module.css";
 
 const HUECO = "…";
 
+// Calcula qué números de página se enseñan y dónde van los puntos.
 // Primera, última, la actual y sus vecinas: 1 … 4 5 6 … 82
 function numeros(actual, total) {
   const visibles = [1, actual - 1, actual, actual + 1, total].filter(
@@ -16,6 +17,7 @@ function numeros(actual, total) {
   });
 }
 
+// Botones para cambiar de página. Si solo hay una, no se muestra nada.
 function Pagination({ actual, total, onCambio }) {
   if (total <= 1) return null;
 

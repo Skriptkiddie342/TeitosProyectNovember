@@ -1,3 +1,4 @@
+// Nombres de los cuatro pasos del formulario.
 export const PASOS = [
   "Datos personales",
   "Datos del hogar",
@@ -5,6 +6,7 @@ export const PASOS = [
   "Revisión",
 ];
 
+// Borrador vacío, con el que se empieza.
 export const INICIAL = {
   paso: 1,
   personales: {
@@ -32,6 +34,8 @@ export const INICIAL = {
   previo: null,
 };
 
+// Prepara los datos de una solicitud enviada para poder editarlos en el
+// formulario.
 // Los datos del servidor (personas: 2) pasan a los del formulario ("2").
 function datosDe(solicitud, iniciales) {
   const campos = Object.entries(iniciales).map(([campo, inicial]) => {
@@ -42,6 +46,8 @@ function datosDe(solicitud, iniciales) {
   return Object.fromEntries(campos);
 }
 
+// Cambia una vivienda de posición en la lista: salto -1 la sube y 1 la baja. Si
+// ya está en el extremo, devuelve la lista igual.
 function mover(lista, id, salto) {
   const desde = lista.indexOf(id);
   const hasta = desde + salto;
@@ -52,6 +58,8 @@ function mover(lista, id, salto) {
   return nueva;
 }
 
+// Reúne todos los cambios posibles del borrador. Recibe el estado actual y una
+// acción, y devuelve un estado nuevo, sin modificar el anterior.
 export function borradorReducer(estado, accion) {
   const { personales, hogar, viviendas, tocados } = estado;
 
@@ -62,12 +70,14 @@ export function borradorReducer(estado, accion) {
         personales: { ...personales, [accion.campo]: accion.valor },
         tocados: { ...tocados, [accion.campo]: true },
       };
+    // Se escribe en un campo del hogar.
     case "cambiar":
       return {
         ...estado,
         hogar: { ...hogar, [accion.campo]: accion.valor },
         tocados: { ...tocados, [accion.campo]: true },
       };
+    // Se marcan campos para que ya se vean sus errores.
     case "tocar": {
       const nuevos = accion.campos.map((campo) => [campo, true]);
       return {
@@ -75,22 +85,28 @@ export function borradorReducer(estado, accion) {
         tocados: { ...tocados, ...Object.fromEntries(nuevos) },
       };
     }
+    // Se cambia de paso.
     case "ir":
       return { ...estado, paso: accion.paso };
+    // Se añade una vivienda al final, si no estaba ya.
     case "anadir": {
       const id = String(accion.id);
       if (viviendas.includes(id)) return estado;
       return { ...estado, viviendas: [...viviendas, id] };
     }
+    // Se quita una vivienda.
     case "quitar":
       return {
         ...estado,
         viviendas: viviendas.filter((id) => id !== String(accion.id)),
       };
+    // Se sube o se baja una vivienda en el orden de preferencia.
     case "subir":
       return { ...estado, viviendas: mover(viviendas, accion.id, -1) };
     case "bajar":
       return { ...estado, viviendas: mover(viviendas, accion.id, 1) };
+    // Se empieza a modificar una solicitud enviada, y se guarda en previo el
+    // borrador que hubiera sin enviar.
     case "editar":
       return {
         ...INICIAL,
@@ -103,6 +119,8 @@ export function borradorReducer(estado, accion) {
     // Tras enviar, guardar o cancelar: vuelve el borrador que había, si había.
     case "terminar":
       return estado.previo ?? INICIAL;
+    // Se ha retirado una solicitud: si era la que se estaba modificando, se
+    // deja de modificar.
     case "retirada":
       return estado.editando === String(accion.id)
         ? (estado.previo ?? INICIAL)
@@ -112,10 +130,12 @@ export function borradorReducer(estado, accion) {
   }
 }
 
+// Dice si un valor es un objeto normal (ni null ni una lista).
 function esObjeto(valor) {
   return typeof valor === "object" && valor !== null && !Array.isArray(valor);
 }
 
+// Convierte el texto guardado en un borrador. Si está roto, devuelve uno vacío.
 // Lo guardado puede estar roto o ser de otra versión: solo se acepta lo que
 // encaja con la forma del borrador.
 export function restaurar(texto) {
@@ -138,6 +158,8 @@ function recuperar(guardados, iniciales) {
   return datos;
 }
 
+// Monta el borrador dato a dato, quedándose solo con los que son del tipo
+// correcto. Se llama a sí misma para reconstruir también previo.
 function reconstruir(guardado) {
   if (!esObjeto(guardado)) return INICIAL;
 

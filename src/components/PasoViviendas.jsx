@@ -5,20 +5,25 @@ import formatLocation from "../utils/formatLocation.jsx";
 import { euros } from "../utils/euros.js";
 import styles from "./SolicitudForm.module.css";
 
+// Paso 3 del formulario: las viviendas elegidas, para ordenarlas o quitarlas.
 function PasoViviendas({ elegidas, estado, error, onMover, onQuitar }) {
   const [mensaje, setMensaje] = useState("");
   const cargadas = estado === "ok" || estado === "vacio";
 
+  // Referencia de la vivienda o, si ya no está disponible, su id.
   function nombre({ id, vivienda }) {
     return vivienda?.referencia ?? `Vivienda ${id}`;
   }
 
+  // Sube o baja una vivienda, si no está en el extremo, y avisa de su nueva
+  // posición.
   function mover(type, elegida, posicion) {
     if (posicion < 1 || posicion > elegidas.length) return;
     onMover(type, elegida.id);
     setMensaje(`${nombre(elegida)} pasa a la preferencia ${posicion}.`);
   }
 
+  // Quita una vivienda y avisa de que se ha quitado.
   function quitar(elegida) {
     onQuitar(elegida.id);
     setMensaje(`${nombre(elegida)} se ha quitado de la solicitud.`);

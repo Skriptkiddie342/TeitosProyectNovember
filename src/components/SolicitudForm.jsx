@@ -19,6 +19,7 @@ import {
 import { buscarPorId } from "../utils/ids.js";
 import styles from "./SolicitudForm.module.css";
 
+// Junta el estado de las dos cargas (viviendas y convocatorias) en uno solo.
 // Hacen falta las dos colecciones para validar las viviendas.
 function unirEstados(viviendas, convocatorias) {
   const estados = [viviendas, convocatorias];
@@ -27,6 +28,8 @@ function unirEstados(viviendas, convocatorias) {
   return viviendas;
 }
 
+// Error general del paso 3: sin viviendas, sin cargar o con alguna que no vale.
+// Devuelve null si todo está bien.
 function errorDeSeleccion(elegidas, estado) {
   if (elegidas.length === 0) return "Añade al menos una vivienda.";
   if (estado === "cargando") return "Espera a que se carguen las viviendas.";
@@ -36,6 +39,8 @@ function errorDeSeleccion(elegidas, estado) {
     : null;
 }
 
+// Formulario de la solicitud en cuatro pasos. Los datos están en el borrador
+// (Context) y aquí se validan, se cambia de paso y se envían.
 function SolicitudForm() {
   const { borrador, dispatch } = useBorrador();
   const { viviendas: libres, estado: estadoViviendas } = useDwellings();
@@ -54,6 +59,7 @@ function SolicitudForm() {
   const accionFinal = modificando ? "Guardar cambios" : "Enviar solicitud";
   const ultimo = paso === PASOS.length;
 
+  // Cada vivienda elegida con sus datos y su error, si lo tiene.
   const elegidas = borrador.viviendas.map((id) => {
     const vivienda = buscarPorId(libres, id);
     const error = errorVivienda(vivienda, hogar, convocatorias);
@@ -63,6 +69,7 @@ function SolicitudForm() {
   const erroresHogar = validarHogar(hogar);
   const errorViviendas = errorDeSeleccion(elegidas, estado);
 
+  // Después de pintar, pone el foco en el elemento que se haya pedido.
   // El destino del foco puede no existir hasta que se pinta el nuevo estado.
   useEffect(() => {
     if (!foco.current) return;
@@ -71,17 +78,21 @@ function SolicitudForm() {
     formulario.current.querySelector(destino)?.focus();
   });
 
+  // Cambia de paso y lleva el foco al título.
   function irA(numero) {
     foco.current = "titulo";
     dispatch({ type: "ir", paso: numero });
   }
 
+  // Vuelve al paso que tiene errores, los muestra y pone el foco en el primero.
   function mostrarErrores(numero, campos, destino) {
     foco.current = destino;
     dispatch({ type: "tocar", campos });
     dispatch({ type: "ir", paso: numero });
   }
 
+  // Al pulsar Siguiente: valida y, si todo está bien, pasa al siguiente paso.
+  // En el último, abre el modal de confirmación.
   function continuar(e) {
     e.preventDefault();
 
@@ -102,6 +113,8 @@ function SolicitudForm() {
     setConfirmando(true);
   }
 
+  // Envía la solicitud después de confirmarla en el modal. Si sale bien, limpia
+  // el borrador y va a Mis solicitudes; si falla, el borrador se conserva.
   async function confirmar() {
     const datos = {
       ...personales,
@@ -117,16 +130,19 @@ function SolicitudForm() {
     navegar("/mi-solicitud", { state: { aviso } });
   }
 
+  // Deja de modificar la solicitud enviada y vuelve a Mis solicitudes.
   function cancelarModificacion() {
     dispatch({ type: "terminar" });
     navegar("/mi-solicitud");
   }
 
+  // Sube o baja una vivienda y deja el foco en el botón que se ha pulsado.
   function mover(type, id) {
     foco.current = `${type}-${id}`;
     dispatch({ type, id });
   }
 
+  // Quita una vivienda y lleva el foco al título.
   function quitar(id) {
     foco.current = "titulo";
     dispatch({ type: "quitar", id });

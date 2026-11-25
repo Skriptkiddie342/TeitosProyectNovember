@@ -4,20 +4,25 @@ import { fechaDeHoy } from "../reglas/solicitud.js";
 import { euros, soloEuros } from "../utils/euros.js";
 import styles from "./SolicitudForm.module.css";
 
+// Lista [1, 2, 3, 4, 5, 6] para el desplegable.
 const OPCIONES_PERSONAS = Array.from(
   { length: PERSONAS_MAXIMO },
   (_, i) => i + 1,
 );
 
+// Paso 2 del formulario: los datos del hogar.
 function PasoHogar({ hogar, errores, tocados, onCambiar, onTocar }) {
   const { minimo, maximo } = limitesIngresos(
     hogar.personas === "" ? null : Number(hogar.personas),
   );
 
+  // Devuelve el error de un campo, solo si el usuario ya ha pasado por él.
   function error(campo) {
     return tocados[campo] ? errores[campo] : undefined;
   }
 
+  // Propiedades comunes de un campo: su valor y qué hacer al escribir y al
+  // salir.
   // El error aparece al escribir y también al salir del campo sin rellenarlo.
   function control(campo) {
     return {
@@ -27,6 +32,7 @@ function PasoHogar({ hogar, errores, tocados, onCambiar, onTocar }) {
     };
   }
 
+  // Pinta una casilla de sí o no con su texto.
   function casilla(campo, texto) {
     return (
       <label className={styles.casilla}>

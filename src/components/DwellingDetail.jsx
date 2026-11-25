@@ -5,6 +5,7 @@ import Badge from "./ui/badge.jsx";
 import SolicitarButton from "./SolicitarButton.jsx";
 import styles from "./DwellingDetail.module.css";
 
+// Ficha completa de una vivienda, con el botón para solicitarla si está libre.
 function DwellingDetail({ vivienda }) {
   const {
     adjudicada,
