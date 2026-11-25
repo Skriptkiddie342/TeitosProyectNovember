@@ -219,6 +219,10 @@ export default function MisSolicitudes() {
                     </li>
                   ))}
                 </ol>
+                {datos.nombre && <p>Nombre completo: {datos.nombre}</p>}
+                {datos.dni && <p>DNI: {datos.dni}</p>}
+                {datos.telefono && <p>Teléfono: {datos.telefono}</p>}
+                {datos.correo && <p>Correo electrónico: {datos.correo}</p>}
                 <p>Personas: {datos.personas}</p>
                 {datos.ingresos && (
                   <p>Ingresos anuales: {euros(datos.ingresos)}</p>

@@ -4,9 +4,16 @@ import { PERSONAS_MAXIMO } from "../reglas/acceso.js";
 import { euros } from "../utils/euros.js";
 import styles from "./SolicitudForm.module.css";
 
-function PasoRevision({ hogar, elegidas, estado, onEditar }) {
+function PasoRevision({ personales, hogar, elegidas, estado, onEditar }) {
   const cargadas = estado === "ok" || estado === "vacio";
   const personas = Number(hogar.personas);
+
+  const datosPersonales = [
+    ["Nombre completo", personales.nombre],
+    ["DNI", personales.dni],
+    ["Teléfono", personales.telefono],
+    ["Correo electrónico", personales.correo],
+  ];
 
   const datos = [
     [
@@ -24,6 +31,26 @@ function PasoRevision({ hogar, elegidas, estado, onEditar }) {
   return (
     <div className={styles.campos}>
       <section className={styles.bloque}>
+        <h3>Datos personales</h3>
+        <dl className={styles.resumen}>
+          {datosPersonales.map(([termino, valor]) => (
+            <div key={termino}>
+              <dt>{termino}</dt>
+              <dd>{valor}</dd>
+            </div>
+          ))}
+        </dl>
+        <button
+          type="button"
+          className={styles.secundario}
+          aria-label="Editar datos personales"
+          onClick={() => onEditar(1)}
+        >
+          Editar
+        </button>
+      </section>
+
+      <section className={styles.bloque}>
         <h3>Datos del hogar</h3>
         <dl className={styles.resumen}>
           {datos.map(([termino, valor]) => (
@@ -37,7 +64,7 @@ function PasoRevision({ hogar, elegidas, estado, onEditar }) {
           type="button"
           className={styles.secundario}
           aria-label="Editar datos del hogar"
-          onClick={() => onEditar(1)}
+          onClick={() => onEditar(2)}
         >
           Editar
         </button>
@@ -62,7 +89,7 @@ function PasoRevision({ hogar, elegidas, estado, onEditar }) {
           type="button"
           className={styles.secundario}
           aria-label="Editar viviendas elegidas"
-          onClick={() => onEditar(2)}
+          onClick={() => onEditar(3)}
         >
           Editar
         </button>

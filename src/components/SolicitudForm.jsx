@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "./ConfirmModal.jsx";
+import PasoPersonales from "./PasoPersonales.jsx";
 import PasoHogar from "./PasoHogar.jsx";
 import PasoViviendas from "./PasoViviendas.jsx";
 import PasoRevision from "./PasoRevision.jsx";
@@ -9,7 +10,12 @@ import { PASOS } from "../context/borradorReducer.js";
 import useCalls from "../hooks/useCalls.js";
 import useDwellings from "../hooks/useDwellings.js";
 import useEnviarSolicitud from "../hooks/useEnviarSolicitud.js";
-import { errorVivienda, validarHogar } from "../reglas/solicitud.js";
+import {
+  errorVivienda,
+  normalizarPersonales,
+  validarHogar,
+  validarPersonales,
+} from "../reglas/solicitud.js";
 import { buscarPorId } from "../utils/ids.js";
 import styles from "./SolicitudForm.module.css";
 
@@ -42,6 +48,7 @@ function SolicitudForm() {
   const foco = useRef(null);
 
   const { paso, hogar, tocados, editando } = borrador;
+  const personales = normalizarPersonales(borrador.personales);
   const estado = unirEstados(estadoViviendas, estadoConvocatorias);
   const modificando = editando !== null;
   const accionFinal = modificando ? "Guardar cambios" : "Enviar solicitud";
@@ -52,6 +59,7 @@ function SolicitudForm() {
     const error = errorVivienda(vivienda, hogar, convocatorias);
     return { id, vivienda, error };
   });
+  const erroresPersonales = validarPersonales(personales);
   const erroresHogar = validarHogar(hogar);
   const errorViviendas = errorDeSeleccion(elegidas, estado);
 
@@ -77,10 +85,16 @@ function SolicitudForm() {
   function continuar(e) {
     e.preventDefault();
 
-    const [primero] = Object.keys(erroresHogar);
-    if (primero) return mostrarErrores(1, Object.keys(hogar), primero);
-    if (paso >= 2 && errorViviendas) {
-      return mostrarErrores(2, ["viviendas"], "error-viviendas");
+    const [primerPersonal] = Object.keys(erroresPersonales);
+    if (primerPersonal) {
+      return mostrarErrores(1, Object.keys(personales), primerPersonal);
+    }
+    const [primerHogar] = Object.keys(erroresHogar);
+    if (paso >= 2 && primerHogar) {
+      return mostrarErrores(2, Object.keys(hogar), primerHogar);
+    }
+    if (paso >= 3 && errorViviendas) {
+      return mostrarErrores(3, ["viviendas"], "error-viviendas");
     }
     if (!ultimo) return irA(paso + 1);
 
@@ -90,6 +104,7 @@ function SolicitudForm() {
 
   async function confirmar() {
     const datos = {
+      ...personales,
       ...hogar,
       personas: Number(hogar.personas),
       ingresos: Number(hogar.ingresos),
@@ -159,6 +174,17 @@ function SolicitudForm() {
         </h2>
 
         {paso === 1 && (
+          <PasoPersonales
+            personales={borrador.personales}
+            errores={erroresPersonales}
+            tocados={tocados}
+            onCambiar={(campo, valor) =>
+              dispatch({ type: "cambiarPersonales", campo, valor })
+            }
+            onTocar={(campo) => dispatch({ type: "tocar", campos: [campo] })}
+          />
+        )}
+        {paso === 2 && (
           <PasoHogar
             hogar={hogar}
             errores={erroresHogar}
@@ -169,7 +195,7 @@ function SolicitudForm() {
             onTocar={(campo) => dispatch({ type: "tocar", campos: [campo] })}
           />
         )}
-        {paso === 2 && (
+        {paso === 3 && (
           <PasoViviendas
             elegidas={elegidas}
             estado={estado}
@@ -178,8 +204,9 @@ function SolicitudForm() {
             onQuitar={quitar}
           />
         )}
-        {paso === 3 && (
+        {paso === 4 && (
           <PasoRevision
+            personales={personales}
             hogar={hogar}
             elegidas={elegidas}
             estado={estado}

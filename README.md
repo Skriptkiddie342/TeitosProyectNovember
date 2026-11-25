@@ -61,7 +61,7 @@ Después, abre <http://localhost:5173>. El servidor de datos queda en <http://lo
 | `/viviendas/:id`     | Detalle de una vivienda                                                 |
 | `/convocatorias`     | Todas las convocatorias                                                 |
 | `/convocatorias/:id` | Detalle de una convocatoria y sus viviendas libres                      |
-| `/solicitud`         | Solicitud en tres pasos: hogar, viviendas por preferencia y revisión    |
+| `/solicitud`         | Solicitud en cuatro pasos: datos personales, hogar, viviendas y revisión |
 | `/mi-solicitud`      | Solicitudes enviadas: consultar, modificar con el plazo abierto y retirar |
 | Cualquier otra       | Página 404                                                              |
 
@@ -122,11 +122,11 @@ La aplicación no se rompe ni muestra páginas en blanco. Esto es lo que se ve:
 | `/viviendas`                            | «No se han podido cargar las viviendas.»                                                  |
 | `/viviendas/:id`                        | «No se ha podido cargar la vivienda», con enlace al buscador                              |
 | `/convocatorias`, `/convocatorias/:id`  | Mensaje de error; el detalle enlaza con el listado                                        |
-| `/solicitud`                            | El paso 1 funciona y valida. En el paso 2 avisa de que no puede comprobar las viviendas y no deja continuar |
+| `/solicitud`                            | Los pasos 1 y 2 funcionan y validan. En el paso 3 avisa de que no puede comprobar las viviendas y no deja continuar |
 | `/mi-solicitud`                         | «No se han podido cargar las solicitudes.»                                                |
 | Ruta desconocida                        | Página 404                                                                                |
 
-- **Sí funciona:** la navegación, el menú, recargar cualquier ruta, los enlaces directos y el primer paso de la solicitud. El borrador se guarda en el navegador (`localStorage`).
+- **Sí funciona:** la navegación, el menú, recargar cualquier ruta, los enlaces directos y los dos primeros pasos de la solicitud. El borrador se guarda en el navegador (`localStorage`).
 - **No funciona:** buscar viviendas, ver detalles, añadir viviendas a la solicitud y enviar, modificar o retirar solicitudes.
 
 Para usarla completa hay que arrancarla en local con los pasos de arriba. Para que funcionara publicada habría que alojar también json-server y poner su dirección en [src/api/api.js](src/api/api.js), el único sitio donde está escrita.

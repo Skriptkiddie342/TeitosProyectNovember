@@ -8,6 +8,8 @@ import { convocatoriaDe, plazoAbierto } from "./plazo.js";
 import { euros } from "../utils/euros.js";
 
 const TEXTO_MAXIMO = 300;
+const NOMBRE_MINIMO = 3;
+const LETRAS_DNI = "TRWAGMYFPDXBNJZSQVHLCKE";
 
 // Fecha local en formato AAAA-MM-DD, el mismo que usa <input type="date">.
 export function fechaDeHoy() {
@@ -52,10 +54,65 @@ function errorTexto(texto) {
   return `Como máximo ${TEXTO_MAXIMO} caracteres: llevas ${texto.length}.`;
 }
 
+function soloErrores(errores) {
+  return Object.fromEntries(
+    Object.entries(errores).filter(([, texto]) => texto !== null),
+  );
+}
+
+export function normalizarPersonales({ nombre, dni, telefono, correo }) {
+  return {
+    nombre: nombre.trim(),
+    dni: dni.trim().toUpperCase(),
+    telefono: telefono.trim(),
+    correo: correo.trim(),
+  };
+}
+
+function errorNombre(nombre) {
+  if (nombre === "") return "Indica tu nombre completo.";
+  return nombre.length < NOMBRE_MINIMO
+    ? `El nombre debe tener al menos ${NOMBRE_MINIMO} caracteres.`
+    : null;
+}
+
+function errorDni(dni) {
+  if (dni === "") return "Indica tu DNI.";
+  if (!/^\d{8}[A-Z]$/.test(dni)) {
+    return "El DNI debe tener 8 números y una letra.";
+  }
+  const letra = LETRAS_DNI[Number(dni.slice(0, 8)) % LETRAS_DNI.length];
+  return dni[8] === letra ? null : "La letra del DNI no es correcta.";
+}
+
+function errorTelefono(telefono) {
+  if (telefono === "") return "Indica tu teléfono.";
+  return /^[6-9]\d{8}$/.test(telefono)
+    ? null
+    : "El teléfono debe tener 9 cifras y empezar por 6, 7, 8 o 9.";
+}
+
+function errorCorreo(correo) {
+  if (correo === "") return "Indica tu correo electrónico.";
+  return /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(correo)
+    ? null
+    : "El correo no es válido: escríbelo como nombre@dominio.es.";
+}
+
+export function validarPersonales(personales) {
+  const { nombre, dni, telefono, correo } = normalizarPersonales(personales);
+  return soloErrores({
+    nombre: errorNombre(nombre),
+    dni: errorDni(dni),
+    telefono: errorTelefono(telefono),
+    correo: errorCorreo(correo),
+  });
+}
+
 // Devuelve solo los campos con error: { campo: "texto del error" }
 export function validarHogar(hogar, hoy = fechaDeHoy()) {
   const personas = leerPersonas(hogar.personas);
-  const errores = {
+  return soloErrores({
     personas:
       personas === null
         ? "Indica cuántas personas vivirán en la vivienda."
@@ -64,10 +121,7 @@ export function validarHogar(hogar, hoy = fechaDeHoy()) {
     fecha: errorFecha(hogar.fecha, hoy),
     necesidades: errorTexto(hogar.necesidades),
     observaciones: errorTexto(hogar.observaciones),
-  };
-  return Object.fromEntries(
-    Object.entries(errores).filter(([, texto]) => texto !== null),
-  );
+  });
 }
 
 // Una vivienda undefined es que ya no está entre las libres.

@@ -1,7 +1,18 @@
-export const PASOS = ["Datos del hogar", "Viviendas elegidas", "Revisión"];
+export const PASOS = [
+  "Datos personales",
+  "Datos del hogar",
+  "Viviendas elegidas",
+  "Revisión",
+];
 
 export const INICIAL = {
   paso: 1,
+  personales: {
+    nombre: "",
+    dni: "",
+    telefono: "",
+    correo: "",
+  },
   hogar: {
     personas: "",
     ingresos: "",
@@ -22,8 +33,8 @@ export const INICIAL = {
 };
 
 // Los datos del servidor (personas: 2) pasan a los del formulario ("2").
-function hogarDe(solicitud) {
-  const campos = Object.entries(INICIAL.hogar).map(([campo, inicial]) => {
+function datosDe(solicitud, iniciales) {
+  const campos = Object.entries(iniciales).map(([campo, inicial]) => {
     const valor = solicitud[campo] ?? inicial;
     const esCasilla = typeof inicial === "boolean";
     return [campo, esCasilla ? Boolean(valor) : String(valor)];
@@ -42,9 +53,15 @@ function mover(lista, id, salto) {
 }
 
 export function borradorReducer(estado, accion) {
-  const { hogar, viviendas, tocados } = estado;
+  const { personales, hogar, viviendas, tocados } = estado;
 
   switch (accion.type) {
+    case "cambiarPersonales":
+      return {
+        ...estado,
+        personales: { ...personales, [accion.campo]: accion.valor },
+        tocados: { ...tocados, [accion.campo]: true },
+      };
     case "cambiar":
       return {
         ...estado,
@@ -77,7 +94,8 @@ export function borradorReducer(estado, accion) {
     case "editar":
       return {
         ...INICIAL,
-        hogar: hogarDe(accion.solicitud),
+        personales: datosDe(accion.solicitud, INICIAL.personales),
+        hogar: datosDe(accion.solicitud, INICIAL.hogar),
         viviendas: accion.solicitud.viviendas.map(String),
         editando: String(accion.solicitud.id),
         previo: estado.editando === null ? estado : estado.previo,
@@ -108,24 +126,30 @@ export function restaurar(texto) {
   }
 }
 
-function reconstruir(guardado) {
-  if (!esObjeto(guardado)) return INICIAL;
-
-  const hogar = { ...INICIAL.hogar };
-  if (esObjeto(guardado.hogar)) {
-    for (const campo of Object.keys(hogar)) {
-      if (typeof guardado.hogar[campo] === typeof hogar[campo]) {
-        hogar[campo] = guardado.hogar[campo];
+function recuperar(guardados, iniciales) {
+  const datos = { ...iniciales };
+  if (esObjeto(guardados)) {
+    for (const campo of Object.keys(datos)) {
+      if (typeof guardados[campo] === typeof datos[campo]) {
+        datos[campo] = guardados[campo];
       }
     }
   }
+  return datos;
+}
+
+function reconstruir(guardado) {
+  if (!esObjeto(guardado)) return INICIAL;
 
   const ids = Array.isArray(guardado.viviendas) ? guardado.viviendas : [];
   const validos = ids.filter((id) => ["string", "number"].includes(typeof id));
+  const pasoValido =
+    esObjeto(guardado.personales) && [1, 2, 3, 4].includes(guardado.paso);
 
   return {
-    paso: [1, 2, 3].includes(guardado.paso) ? guardado.paso : 1,
-    hogar,
+    paso: pasoValido ? guardado.paso : 1,
+    personales: recuperar(guardado.personales, INICIAL.personales),
+    hogar: recuperar(guardado.hogar, INICIAL.hogar),
     viviendas: [...new Set(validos.map(String))],
     tocados: esObjeto(guardado.tocados) ? guardado.tocados : {},
     editando: typeof guardado.editando === "string" ? guardado.editando : null,
